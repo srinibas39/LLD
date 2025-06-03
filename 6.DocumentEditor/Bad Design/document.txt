@@ -1,0 +1,3 @@
+Hello world
+Image: capture.png
+Bye world

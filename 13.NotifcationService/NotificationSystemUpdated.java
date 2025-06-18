@@ -111,8 +111,9 @@ class Observable implements  IObservable{
 class Logger implements IObserver{
     private IObservable observable;
 
-    public Logger(IObservable observable){
-        this.observable = observable;
+    public Logger(){
+        this.observable = NotificationService.getInstance().getObservable();
+        this.observable.addObserver(this);
     }
 
     @Override
@@ -162,7 +163,7 @@ class SMSStrategy implements NotificationStretegy{
 class PopupStrategy implements NotificationStretegy{
     @Override
     public void sendNotification(String content){
-        System.err.println("Sending popup notifcation to "+ content);
+        System.err.println("Sending Popup notification to "+ content);
     }
 }
 
@@ -170,8 +171,9 @@ class NotificationEngine implements IObserver{
     private IObservable observable;
     private List<NotificationStretegy> notificationStrategyList = new ArrayList<>();
 
-    public NotificationEngine(IObservable observable){
-        this.observable = observable;
+    public NotificationEngine(){
+        this.observable = NotificationService.getInstance().getObservable();
+        this.observable.addObserver(this);
     }
 
     public void addStrategy(NotificationStretegy notificationStrategy){
@@ -217,23 +219,21 @@ class NotificationService{
 
 }
 
- class NotificationSystem{
+ class NotificationSystemUpdated{
     public static void main(String[] args) {
         
         NotificationService service =  NotificationService.getInstance();
         Observable obs = service.getObservable();
         
-        Logger logger = new Logger(obs);
+         Logger logger = new Logger();
 
-        NotificationEngine notificationEngine = new NotificationEngine(obs);
+        NotificationEngine notificationEngine = new NotificationEngine();
         
         notificationEngine.addStrategy(new EmailStrategy("srinibas39@gmail.com"));
         notificationEngine.addStrategy(new SMSStrategy("12345678"));
         notificationEngine.addStrategy(new PopupStrategy());
 
-        //attach observers
-        obs.addObserver(logger);
-        obs.addObserver(notificationEngine);
+   
 
         //create a notification with decorators
         INotification notification = new SimpleNotification("<First Notification>");

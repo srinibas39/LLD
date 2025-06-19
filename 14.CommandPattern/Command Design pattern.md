@@ -1,6 +1,7 @@
 # Command Design pattern
 
 - The Command Pattern turns a request into an object, so you can pass it around, store it, or undo it later.
+- Basically we have source -->(req) receiver, we turn the req into object
 - Real life Application
 - Undo" last action.
     - "Schedule" commands for later.
